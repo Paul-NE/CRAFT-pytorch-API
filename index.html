@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Predicting</title>
+</head>
+<body>
+    <input type="file" id="imageInput" accept="image/*">
+    <img id="imagePreview" src="#" alt="your image" />
+    <button onclick="uploadImage()">Process</button>
+    <p id="predictionResult"></p>
+    <script type="text/javascript">
+        imageInput.onchange = evt => {
+        const [file] = imageInput.files
+        if (file) {
+            imagePreview.src = URL.createObjectURL(file)
+            }
+        };
+
+        async function uploadImage() {
+            console.log("Function call")
+            const input = document.getElementById("imageInput");
+            if (!input.files[0]) {
+                alert("Please upload a file first!");
+                return;
+            }
+            const file = input.files[0];
+            const formData = new FormData();
+            formData.append("file", file);
+            try {
+                const response = await fetch("http://127.0.0.1:8000/text-found", {
+                    method:"POST",
+                    body: formData
+                });
+                const result = await response.json();
+                console.log(result);
+
+                let content = ""
+                result.boxes.forEach(box => {
+                    content += "["
+                    box.forEach(point => {
+                        content += `, ${point}`
+                    });
+                    content += "]"
+                });
+                console.log(content);
+                document.getElementById("predictionResult").textContent = `boxes: ${result.boxes[0]}`;
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Failed");
+            }
+        }
+    </script>
+</body>

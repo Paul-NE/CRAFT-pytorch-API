@@ -1,0 +1,13 @@
+{
+    "trained_model": "craft_model/weights/craft_mlt_25k.pth",
+    "text_threshold": 0.7,
+    "low_text": 0.4,
+    "link_threshold": 0.4,
+    "cuda": true,
+    "canvas_size": 1280,
+    "mag_ratio": 1.5,
+    "poly": false,
+    "show_time": false,
+    "refine": false,
+    "refiner_model": "craft_model/weights/craft_refiner_CTW1500.pth"
+}
